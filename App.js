@@ -76,6 +76,30 @@ function App() {
     setPrice("");
     setQuantity("");
   };
+  const downloadCSV = () => {
+    const headers = ["ID", "Brand", "Model", "Price", "Quantity"];
+
+    const rows = filteredCars.map(car => [
+      car.id,
+      car.brand,
+      car.model,
+      car.price,
+      car.quantity
+    ]);
+
+    let csvContent =
+      "data:text/csv;charset=utf-8," +
+      [headers, ...rows].map(e => e.join(",")).join("\n");
+
+    const encodedUri = encodeURI(csvContent);
+
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "car_stock.csv");
+    document.body.appendChild(link);
+
+    link.click();
+  };  
 
   return (
 
@@ -112,6 +136,20 @@ function App() {
         <button className="save-btn" onClick={saveCar}>
           Save
         </button>
+            <button
+        onClick={downloadCSV}
+        style={{
+          margin: "10px",
+          padding: "10px",
+          background: "green",
+          color: "white",
+          border: "none",
+          borderRadius: "8px",
+          cursor: "pointer"
+        }}
+      >
+        Download CSV
+      </button>
 
       </div>
 
